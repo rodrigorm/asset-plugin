@@ -23,7 +23,7 @@ class AssetFactory {
 		}
 		$info['dirname'] .= '/';
 
-		$asset = $info['dirname'] . $info['basename'] . '.' . $info['extension'];
+		$asset = $info['dirname'] . $info['filename'] . '.' . $info['extension'];
 		if (substr($asset, 0, 1) !== '/') {
 			$asset = $relative->dirname() . '/' . $asset;
 		}
