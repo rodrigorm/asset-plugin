@@ -1,22 +1,23 @@
 <?php 
-App::uses('CssAsset', 'Asset.Lib');
+App::uses('Asset', 'Asset.Lib');
 
-class CssAssetTest extends CakeTestCase {
+class AssetTest extends CakeTestCase {
 	public function setUp() {
 		$this->path = App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS;
 		$this->file = $this->path . 'css' . DS . 'default.css';
-		$this->Asset = new CssAsset($this->file);
+		$this->Asset = new Asset('css/default.css', $this->file);
 	}
 
 	public function testConstruct() {
 		$this->assertEquals($this->file, $this->Asset->file);
 	}
 
-/**
- * @expectedException InvalidArgumentException
- */
-	public function testConstructInvalidFile() {
-		new CssAsset($this->path . 'photo.jpg');
+	public function testDigest() {
+		$this->assertEquals('fcdce6b6d6e2175f6406869882f6f1ce', $this->Asset->digest());
+	}
+
+	public function testDigestUrl() {
+		$this->assertEquals('css/default-fcdce6b6d6e2175f6406869882f6f1ce.css', $this->Asset->digestUrl());
 	}
 
 	public function testContent() {
@@ -25,8 +26,8 @@ class CssAssetTest extends CakeTestCase {
 	}
 
 	public function testFromUrl() {
-		$result = CssAsset::fromUrl('css/bundle.css', $this->path);
-		$this->assertInstanceOf('CssAsset', $result);
+		$result = Asset::fromUrl('css/bundle.css', $this->path);
+		$this->assertInstanceOf('Asset', $result);
 		$this->assertEquals($this->path . 'css' . DS . 'bundle.css', $result->file);
 	}
 }
