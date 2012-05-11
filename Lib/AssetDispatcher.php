@@ -13,7 +13,6 @@ class AssetDispatcher {
 
 		$pathSegments = explode('.', $path);
 		$ext = array_pop($pathSegments);
-		$parts = explode('/', $path);
 
 		try {
 			$this->_deliver($response, $this->_env->resolve($path), $ext);
