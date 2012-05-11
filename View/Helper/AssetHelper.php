@@ -7,7 +7,7 @@ class AssetHelper extends Helper {
 
 	public function assetTimestamp($path) {
 		try {
-			return AssetFactory::fromUrl($path, $this->env)->digestUrl();
+			return '/asset' . AssetFactory::fromUrl($path, $this->env)->digestUrl();
 		} catch (Exception $e) {
 			return parent::assetTimestamp($path);
 		}

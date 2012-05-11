@@ -10,6 +10,6 @@ class AssetHelperTest extends CakeTestCase {
 
 	public function testAssetTimestamp() {
 		$result = $this->Helper->assetTimestamp('/css/default.css');
-		$this->assertEquals('/css/default-42dcbd72dd658306b48c1161ae1643fc.css', $result);
+		$this->assertEquals('/asset/css/default-42dcbd72dd658306b48c1161ae1643fc.css', $result);
 	}
 }

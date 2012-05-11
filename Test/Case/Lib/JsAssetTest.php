@@ -24,7 +24,7 @@ class JsAssetTest extends CakeTestCase {
 	public function testContentBundle() {
 		$this->Asset = JsAsset::fromUrl('js/bundle.js', $this->path);
 		$expected = <<<EOT
-document.write('<script src="/js/default-e4d6bff70072c8553794a4ba4daca1de.js"></script>');
+document.write('<script src="/asset/js/default-e4d6bff70072c8553794a4ba4daca1de.js"></script>');
 var Bundle = {};
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
