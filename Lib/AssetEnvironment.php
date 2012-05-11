@@ -27,7 +27,7 @@ class AssetEnvironment {
 		$parts = explode('/', $url);
 		$assetFile = null;
 
-		$webrootPath = $this->webroot . str_replace('/', DS, $url);
+		$webrootPath = $this->webroot . urldecode(implode(DS, $parts));
 		if (file_exists($webrootPath)) {
 			return $webrootPath;
 		}

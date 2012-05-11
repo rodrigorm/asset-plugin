@@ -3,7 +3,6 @@ App::uses('AssetEnvironment', 'Asset.Lib');
 
 class CssAsset {
 	public $file;
-	protected $_dependencies;
 	protected $_env;
 
 	static public function fromUrl($url, $env = null) {

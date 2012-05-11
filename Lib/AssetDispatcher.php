@@ -2,6 +2,12 @@
 App::uses('AssetEnvironment', 'Asset.Lib');
 
 class AssetDispatcher {
+	protected $_env;
+
+	public function __construct($env = null) {
+		$this->_env = AssetEnvironment::getInstance($env);
+	}
+
 	public function dispatch($url, CakeResponse $response) {
 		$path = preg_replace('#c(css|js)\/#', '$1/', $url);
 
@@ -10,7 +16,7 @@ class AssetDispatcher {
 		$parts = explode('/', $path);
 
 		try {
-			$this->_deliver($response, AssetEnvironment::resolve($path), $ext);
+			$this->_deliver($response, $this->_env->resolve($path), $ext);
 		} catch (Exception $e) {
 			$response->statusCode(404);
 			$response->send();
@@ -18,14 +24,6 @@ class AssetDispatcher {
 		return;
 	}
 
-/**
- * Sends an asset file to the client
- *
- * @param CakeResponse $response The response object to use.
- * @param string $assetFile Path to the asset file in the file system
- * @param string $ext The extension of the file to determine its mime type
- * @return void
- */
 	protected function _deliver(CakeResponse $response, $assetFile, $ext) {
 		ob_start();
 		$compressionEnabled = Configure::read('Asset.compress') && $response->compress();
