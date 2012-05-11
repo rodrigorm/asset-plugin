@@ -27,4 +27,15 @@ class AssetProcessor {
 		$filter = new AssetSprocketsFilter($this);
 		return $filter->input($content);
 	}
+
+	public function requireAsset($asset) {
+		return $this->_require($this->context->load($asset, $this->asset));
+	}
+
+	public function _require($asset) {
+		if (Configure::read('debug') == 0) {
+			return $asset->content($this->context) . "\n";
+		}
+		return $asset->import($this->context) . "\n";
+	}
 }

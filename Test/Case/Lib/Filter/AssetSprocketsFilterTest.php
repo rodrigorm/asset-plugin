@@ -19,7 +19,7 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 			->with($this->equalTo('asset'))
 			->will($this->returnValue($asset));
 		$asset->expects($this->once())
-			->method('content')
+			->method('import')
 			->will($this->returnValue('asset content'));
 
 		$content = '//= require asset';

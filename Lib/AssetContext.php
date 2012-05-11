@@ -1,6 +1,6 @@
 <?php 
 App::uses('AssetEnvironment', 'Asset.Lib');
-App::uses('Asset', 'Asset.Lib');
+App::uses('AssetFactory', 'Asset.Lib');
 
 class AssetContext {
 	protected $_env;
@@ -12,9 +12,9 @@ class AssetContext {
 
 	public function resolve($asset, Asset $relative = null) {
 		if ($relative) {
-			return Asset::fromAsset($relative, $asset);
+			return AssetFactory::fromAsset($relative, $asset);
 		}
-		return Asset::fromUrl($asset, $this->_env);
+		return AssetFactory::fromUrl($asset, $this->_env);
 	}
 
 	public function load($asset, Asset $relative = null) {

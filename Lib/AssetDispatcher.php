@@ -1,5 +1,5 @@
 <?php 
-App::uses('Asset', 'Asset.Lib');
+App::uses('AssetFactory', 'Asset.Lib');
 App::uses('File', 'Utility');
 
 class AssetDispatcher {
@@ -11,7 +11,7 @@ class AssetDispatcher {
 
 	public function dispatch($url, CakeResponse $response) {
 		try {
-			$asset = Asset::fromUrl($url, $this->_env);
+			$asset = AssetFactory::fromUrl($url, $this->_env);
 			$this->_deliver($response, $asset);
 			if (Configure::read('debug') == 0) {
 				$File = new File(WWW_ROOT . str_replace('/', DS, $asset->digestUrl()), true);

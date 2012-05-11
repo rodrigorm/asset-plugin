@@ -1,9 +1,15 @@
 <?php
 App::uses('Helper', 'View');
-App::uses('Asset', 'Asset.Lib');
+App::uses('AssetFactory', 'Asset.Lib');
 
 class AssetHelper extends Helper {
+	public $env = WWW_ROOT;
+
 	public function assetTimestamp($path) {
-		return Asset::fromUrl($path)->digestUrl();
+		try {
+			return AssetFactory::fromUrl($path, $this->env)->digestUrl();
+		} catch (Exception $e) {
+			return parent::assetTimestamp($path);
+		}
 	}
 }

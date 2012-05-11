@@ -8,6 +8,10 @@ abstract class AssetFilter {
 	public function __construct(AssetProcessor $processor) {
 		$this->_processor = $processor;
 	}
+
+	protected function _require($required) {
+		return $this->_processor->requireAsset($required);
+	}
 }
 
 interface AssetInputFilter {

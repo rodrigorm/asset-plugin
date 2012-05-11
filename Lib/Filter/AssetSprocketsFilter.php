@@ -19,9 +19,4 @@ class AssetSprocketsFilter extends AssetFilter implements AssetInputFilter {
 	protected function _replace($matches) {
 		return $this->_require($matches[2]);
 	}
-
-	protected function _require($required) {
-		$asset = $this->_processor->context->load($required, $this->_processor->asset);
-		return $asset->content($this->_processor->context) . "\n";
-	}
 }
