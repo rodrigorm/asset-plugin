@@ -1,20 +1,21 @@
 <?php 
-App::uses('AssetEnvironment', 'Asset.Lib');
+App::uses('Asset', 'Asset.Lib');
+App::uses('AssetContext', 'Asset.Lib');
 
 class AssetProcessor {
 	protected $_asset;
-	protected $_env;
-	protected $_pattern = '/^\s?\/\/\=\s+require\s+(\"?)([^\"\>]+)\1\n+/m';
-	protected $_loaded = array();
+	protected $_pattern = '/^\s?\/\/\=\s+require\s+(\"?)([^\"\n]+)\1\n+/m';
+	protected $_context;
 
-
-	public function __construct(Asset $asset, $env = null) {
+	public function __construct(Asset $asset, AssetContext $context = null) {
 		$this->_asset = $asset;
-		$this->_env = AssetEnvironment::getInstance($env);
+		$this->_context = $context;
+		if (is_null($this->_context)) {
+			$this->_context = new AssetContext($asset->env);
+		}
 	}
 
 	public function content() {
-		$this->_loaded = array();
 		return $this->_content($this->_asset);
 	}
 
@@ -32,12 +33,7 @@ class AssetProcessor {
 
 	protected function _replace($matches) {
 		$required = $matches[2];
-		$asset = $this->_asset->resolve($required);
-
-		if (empty($this->_loaded[$asset->file])) {
-			$this->_loaded[$asset->file] = true;
-			return $asset->content() . "\n";
-		}
-		return '';
+		$asset = $this->_context->load($required, $this->_asset);
+		return $asset->content($this->_context) . "\n";
 	}
 }

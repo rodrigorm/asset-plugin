@@ -1,15 +1,34 @@
 <?php 
 App::uses('AssetEnvironment', 'Asset.Lib');
 App::uses('AssetProcessor', 'Asset.Lib');
+App::uses('AssetContext', 'Asset.Lib');
 
 class Asset {
 	public $url;
 	public $file;
-	protected $_env;
+	public $env;
 
 	static public function fromUrl($url, $env = null) {
 		$environment = AssetEnvironment::getInstance($env);
 		return new Asset($url, $environment->resolve($url), $environment);
+	}
+
+	static public function fromAsset($relative, $url) {
+		$info = pathinfo($url);
+		if (empty($info['extension'])) {
+			$info['extension'] = $relative->extension();
+		}
+		$info['dirname'] .= '/';
+
+		$asset = $info['dirname'] . $info['basename'] . '.' . $info['extension'];
+		if (substr($asset, 0, 1) !== '/') {
+			$asset = $relative->dirname() . '/' . $asset;
+		}
+		$asset = preg_replace('/\w+\/\.\.\//', '', $asset);
+		$asset = str_replace('./', '', $asset);
+		$asset = preg_replace('#\/{2,}#', '/', $asset);
+		$asset = preg_replace('#^\/#', '', $asset);
+		return Asset::fromUrl($asset, $relative->env);
 	}
 
 	public function __construct($url, $file, $env = null) {
@@ -19,7 +38,7 @@ class Asset {
 		}
 		$this->url = $url;
 		$this->file = $file;
-		$this->_env = AssetEnvironment::getInstance($env);
+		$this->env = AssetEnvironment::getInstance($env);
 	}
 
 	public function digest() {
@@ -32,26 +51,17 @@ class Asset {
 		return implode('.', $parts) . '-' . $this->digest() . '.' . $extension;
 	}
 
-	public function content() {
-		$processor = new AssetProcessor($this, $this->_env);
+	public function content(AssetContext $context = null) {
+		if (is_null($context)) {
+			$context = new AssetContext($this->env);
+			$context->depend($this);
+		}
+		$processor = new AssetProcessor($this, $context);
 		return $processor->content();
 	}
 
 	public function size() {
 		return strlen($this->content());
-	}
-
-	public function resolve($dependency) {
-		$info = pathinfo($dependency);
-		if (empty($info['extension'])) {
-			$info['extension'] = $this->extension();
-		}
-		$info['dirname'] .= '/';
-
-		$asset = $info['dirname'] . $info['basename'] . '.' . $info['extension'];
-		$asset = preg_replace('/\w+\/\.\.\//', '', $this->dirname() . '/' . $asset);
-		$asset = str_replace('./', '', $asset);
-		return Asset::fromUrl($asset, $this->_env);
 	}
 
 	public function dirname() {
@@ -65,5 +75,11 @@ class Asset {
 	protected function _pathinfo($key) {
 		$info = pathinfo($this->url);
 		return $info[$key];
+	}
+}
+
+class NullAsset extends Asset {
+	public function content() {
+		return '';
 	}
 }
