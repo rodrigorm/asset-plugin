@@ -1,1 +1,2 @@
-@import "../bundle.css";
+//= require ../bundle
+body { /* app/bundle.css */ }

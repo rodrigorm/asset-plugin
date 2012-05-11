@@ -1,5 +1,6 @@
 <?php 
 App::uses('AssetEnvironment', 'Asset.Lib');
+App::uses('AssetProcessor', 'Asset.Lib');
 
 class Asset {
 	public $url;
@@ -12,6 +13,10 @@ class Asset {
 	}
 
 	public function __construct($url, $file, $env = null) {
+		if (!file_exists($file)) {
+			throw new InvalidArgumentException(__d('asset', 'Invalid filename: %s', $file));
+			
+		}
 		$this->url = $url;
 		$this->file = $file;
 		$this->_env = AssetEnvironment::getInstance($env);
@@ -28,6 +33,37 @@ class Asset {
 	}
 
 	public function content() {
-		return file_get_contents($this->file);
+		$processor = new AssetProcessor($this, $this->_env);
+		return $processor->content();
+	}
+
+	public function size() {
+		return strlen($this->content());
+	}
+
+	public function resolve($dependency) {
+		$info = pathinfo($dependency);
+		if (empty($info['extension'])) {
+			$info['extension'] = $this->extension();
+		}
+		$info['dirname'] .= '/';
+
+		$asset = $info['dirname'] . $info['basename'] . '.' . $info['extension'];
+		$asset = preg_replace('/\w+\/\.\.\//', '', $this->dirname() . '/' . $asset);
+		$asset = str_replace('./', '', $asset);
+		return Asset::fromUrl($asset, $this->_env);
+	}
+
+	public function dirname() {
+		return $this->_pathinfo('dirname');
+	}
+
+	public function extension() {
+		return $this->_pathinfo('extension');
+	}
+
+	protected function _pathinfo($key) {
+		$info = pathinfo($this->url);
+		return $info[$key];
 	}
 }

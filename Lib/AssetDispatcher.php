@@ -1,11 +1,11 @@
 <?php 
-App::uses('AssetEnvironment', 'Asset.Lib');
+App::uses('Asset', 'Asset.Lib');
 
 class AssetDispatcher {
 	protected $_env;
 
 	public function __construct($env = null) {
-		$this->_env = AssetEnvironment::getInstance($env);
+		$this->_env = $env;
 	}
 
 	public function dispatch($url, CakeResponse $response) {
@@ -15,7 +15,7 @@ class AssetDispatcher {
 		$ext = array_pop($pathSegments);
 
 		try {
-			$this->_deliver($response, $this->_env->resolve($path), $ext);
+			$this->_deliver($response, Asset::fromUrl($path, $this->_env), $ext);
 		} catch (Exception $e) {
 			$response->statusCode(404);
 			$response->send();
@@ -23,7 +23,7 @@ class AssetDispatcher {
 		return;
 	}
 
-	protected function _deliver(CakeResponse $response, $assetFile, $ext) {
+	protected function _deliver(CakeResponse $response, $asset, $ext) {
 		ob_start();
 		$compressionEnabled = Configure::read('Asset.compress') && $response->compress();
 		if ($response->type($ext) == $ext) {
@@ -35,17 +35,12 @@ class AssetDispatcher {
 			$response->type($contentType);
 		}
 		if (!$compressionEnabled) {
-			$response->header('Content-Length', filesize($assetFile));
+			$response->header('Content-Length', $asset->size());
 		}
-		$response->cache(filemtime($assetFile));
+		$response->cache(filemtime($asset->file));
 		$response->send();
 		ob_clean();
-		if ($ext === 'css' || $ext === 'js') {
-			include $assetFile;
-		} else {
-			readfile($assetFile);
-		}
-
+		echo $asset->content();
 		if ($compressionEnabled) {
 			ob_end_flush();
 		}

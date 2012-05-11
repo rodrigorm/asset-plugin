@@ -23,11 +23,11 @@ class AssetEnvironment {
 		$this->webroot = $webroot;
 	}
 
-	public function resolve($url) {
-		$parts = explode('/', $url);
+	public function resolve($asset, $relative = null) {
+		$parts = explode('/', $asset);
 		$assetFile = null;
 
-		$webrootPath = $this->webroot . urldecode(implode(DS, $parts));
+		$webrootPath = realpath($this->webroot . urldecode(implode(DS, $parts)));
 		if (file_exists($webrootPath)) {
 			return $webrootPath;
 		}
@@ -38,7 +38,7 @@ class AssetEnvironment {
 			$fileFragment = urldecode(implode(DS, $parts));
 			$path = App::themePath($themeName) . 'webroot' . DS;
 			if (file_exists($path . $fileFragment)) {
-				return $path . $fileFragment;
+				return realpath($path . $fileFragment);
 			}
 		} else {
 			$plugin = Inflector::camelize($parts[0]);
@@ -47,11 +47,11 @@ class AssetEnvironment {
 				$fileFragment = urldecode(implode(DS, $parts));
 				$pluginWebroot = CakePlugin::path($plugin) . 'webroot' . DS;
 				if (file_exists($pluginWebroot . $fileFragment)) {
-					return $pluginWebroot . $fileFragment;
+					return realpath($pluginWebroot . $fileFragment);
 				}
 			}
 		}
 
-		throw new InvalidArgumentException(__('Could not locate asset: %s', $url));
+		throw new InvalidArgumentException(__('Could not locate asset: %s', $asset));
 	}
 }
