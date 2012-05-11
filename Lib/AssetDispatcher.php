@@ -14,7 +14,7 @@ class AssetDispatcher {
 			$asset = AssetFactory::fromUrl($url, $this->_env);
 			$this->_deliver($response, $asset);
 			if (Configure::read('debug') == 0) {
-				$File = new File(WWW_ROOT . str_replace('/', DS, $asset->digestUrl()), true);
+				$File = new File(WWW_ROOT . 'asset' . DS . str_replace('/', DS, $asset->digestUrl()), true);
 				$File->write($asset->content());
 			}
 		} catch (Exception $e) {
