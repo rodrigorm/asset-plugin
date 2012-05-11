@@ -1,5 +1,6 @@
 <?php 
 App::uses('Asset', 'Asset.Lib');
+App::uses('File', 'Utility');
 
 class AssetDispatcher {
 	protected $_env;
@@ -9,13 +10,13 @@ class AssetDispatcher {
 	}
 
 	public function dispatch($url, CakeResponse $response) {
-		$path = preg_replace('#c(css|js)\/#', '$1/', $url);
-
-		$pathSegments = explode('.', $path);
-		$ext = array_pop($pathSegments);
-
 		try {
-			$this->_deliver($response, Asset::fromUrl($path, $this->_env), $ext);
+			$asset = Asset::fromUrl($url, $this->_env);
+			$this->_deliver($response, $asset);
+			if (Configure::read('debug') == 0) {
+				$File = new File(WWW_ROOT . str_replace('/', DS, $asset->digestUrl()), true);
+				$File->write($asset->content());
+			}
 		} catch (Exception $e) {
 			$response->statusCode(404);
 			$response->send();
@@ -23,10 +24,10 @@ class AssetDispatcher {
 		return;
 	}
 
-	protected function _deliver(CakeResponse $response, $asset, $ext) {
+	protected function _deliver(CakeResponse $response, Asset $asset) {
 		ob_start();
 		$compressionEnabled = Configure::read('Asset.compress') && $response->compress();
-		if ($response->type($ext) == $ext) {
+		if ($response->type($asset->extension()) == $asset->extension()) {
 			$contentType = 'application/octet-stream';
 			$agent = env('HTTP_USER_AGENT');
 			if (preg_match('%Opera(/| )([0-9].[0-9]{1,2})%', $agent) || preg_match('/MSIE ([0-9].[0-9]{1,2})/', $agent)) {

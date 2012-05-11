@@ -25,7 +25,6 @@ class AssetEnvironment {
 
 	public function resolve($asset, $relative = null) {
 		$parts = explode('/', $asset);
-		$assetFile = null;
 
 		$webrootPath = realpath($this->webroot . urldecode(implode(DS, $parts)));
 		if (file_exists($webrootPath)) {
