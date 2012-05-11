@@ -10,7 +10,7 @@ class Asset {
 	protected $_content = null;
 
 	static public function fromUrl($url, $env = null) {
-		$url = preg_replace('#^(.+)-([\da-f]+)\.(\w+)$#', '$1.$3', $url);
+		$url = preg_replace('#^(.+)-([\da-f]+)\.(\w+)$#', '$1.$3', urldecode($url));
 		$asset = preg_replace('#c(css|js)\/#', '$1/', $url);
 		$environment = AssetEnvironment::getInstance($env);
 		$file = $environment->resolve($asset);

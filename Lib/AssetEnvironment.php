@@ -24,33 +24,57 @@ class AssetEnvironment {
 	}
 
 	public function resolve($asset, $relative = null) {
-		$parts = explode('/', $asset);
-
-		$webrootPath = realpath($this->webroot . urldecode(implode(DS, $parts)));
-		if (file_exists($webrootPath)) {
-			return $webrootPath;
+		if (($result = $this->_webroot($asset))) {
+			return $result;
 		}
 
-		if ($parts[0] === 'theme') {
-			$themeName = $parts[1];
-			unset($parts[0], $parts[1]);
-			$fileFragment = urldecode(implode(DS, $parts));
-			$path = App::themePath($themeName) . 'webroot' . DS;
-			if (file_exists($path . $fileFragment)) {
-				return realpath($path . $fileFragment);
-			}
-		} else {
-			$plugin = Inflector::camelize($parts[0]);
-			if (CakePlugin::loaded($plugin)) {
-				unset($parts[0]);
-				$fileFragment = urldecode(implode(DS, $parts));
-				$pluginWebroot = CakePlugin::path($plugin) . 'webroot' . DS;
-				if (file_exists($pluginWebroot . $fileFragment)) {
-					return realpath($pluginWebroot . $fileFragment);
-				}
-			}
+		if (($result = $this->_theme($asset))) {
+			return $result;
+		}
+
+		if (($result = $this->_plugin($asset))) {
+			return $result;
 		}
 
 		throw new InvalidArgumentException(__('Could not locate asset: %s', $asset));
+	}
+
+	protected function _webroot($asset) {
+		return $this->_exists(realpath($this->webroot . str_replace('/', DS, $asset)));
+	}
+
+	protected function _theme($asset) {
+		$parts = explode('/', $asset);
+
+		if ($parts[0] !== 'theme') {
+			return false;
+		}
+
+		$themeName = $parts[1];
+		unset($parts[0], $parts[1]);
+		$fileFragment = implode(DS, $parts);
+		$path = App::themePath($themeName) . 'webroot' . DS;
+		return $this->_exists($path . $fileFragment);
+	}
+
+	protected function _plugin($asset) {
+		$parts = explode('/', $asset);
+
+		$plugin = Inflector::camelize($parts[0]);
+		if (!CakePlugin::loaded($plugin)) {
+			return false;
+		}
+
+		unset($parts[0]);
+		$fileFragment = implode(DS, $parts);
+		$path = CakePlugin::path($plugin) . 'webroot' . DS;
+		return $this->_exists($path . $fileFragment);
+	}
+
+	protected function _exists($filename) {
+		if (file_exists($filename)) {
+			return realpath($filename);
+		}
+		return false;
 	}
 }
