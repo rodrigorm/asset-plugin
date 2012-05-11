@@ -3,7 +3,7 @@ App::uses('AssetEnvironment', 'Asset.Lib');
 
 class AssetEnvironmentTest extends CakeTestCase {
 	public function setUp() {
-		$this->path = App::pluginPath('Asset') . 'Test' . DS . 'files' . DS;
+		$this->path = App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS;
 		$this->AssetEnvironment = new AssetEnvironment($this->path);
 	}
 
@@ -34,11 +34,11 @@ class AssetEnvironmentTest extends CakeTestCase {
 	}
 
 	public function resolveProvider() {
-		$path = App::pluginPath('Asset') . 'Test' . DS . 'files' . DS;
+		$path = App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS;
 		return array(
-			array('bundle.css', $path . 'bundle.css'),
-			array('default.css', $path . 'default.css'),
-			array('app/bundle.css', $path . 'app' . DS . 'bundle.css')
+			array('css/bundle.css', $path . 'css' . DS . 'bundle.css'),
+			array('css/default.css', $path . 'css' . DS . 'default.css'),
+			array('css/app/bundle.css', $path . 'css' . DS . 'app' . DS . 'bundle.css')
 		);
 	}
 

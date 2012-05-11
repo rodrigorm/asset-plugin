@@ -3,8 +3,8 @@ App::uses('CssAsset', 'Asset.Lib');
 
 class CssAssetTest extends CakeTestCase {
 	public function setUp() {
-		$this->path = App::pluginPath('Asset') . 'Test' . DS . 'files' . DS;
-		$this->file = $this->path . 'default.css';
+		$this->path = App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS;
+		$this->file = $this->path . 'css' . DS . 'default.css';
 		$this->Asset = new CssAsset($this->file);
 	}
 
@@ -25,8 +25,8 @@ class CssAssetTest extends CakeTestCase {
 	}
 
 	public function testFromUrl() {
-		$result = CssAsset::fromUrl('bundle.css', $this->path);
+		$result = CssAsset::fromUrl('css/bundle.css', $this->path);
 		$this->assertInstanceOf('CssAsset', $result);
-		$this->assertEquals($this->path . 'bundle.css', $result->file);
+		$this->assertEquals($this->path . 'css' . DS . 'bundle.css', $result->file);
 	}
 }

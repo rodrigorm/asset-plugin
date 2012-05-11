@@ -3,7 +3,7 @@ App::uses('AssetTimestamper', 'Asset.Lib');
 
 class AssetTimestamperTest extends CakeTestCase {
 	public function setUp() {
-		$this->filePath = App::pluginPath('Asset') . 'Test' . DS . 'files' . DS;
+		$this->filePath = App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS . 'img' . DS;
 	}
 
 	public function testTimestamp() {
