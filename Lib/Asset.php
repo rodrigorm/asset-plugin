@@ -44,8 +44,8 @@ abstract class Asset {
 		return $this->_content;
 	}
 
-	public function import(AssetContext $context = null) {
-		return $this->content($context);
+	public function import(Asset $asset, AssetContext $context = null) {
+		return $asset->content($context);
 	}
 
 	protected function _process(AssetContext $context = null) {

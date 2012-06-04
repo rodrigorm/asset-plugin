@@ -32,6 +32,6 @@ class AssetProcessor {
 		if (Configure::read('debug') == 0) {
 			return $asset->content($this->context);
 		}
-		return $asset->import($this->context);
+		return $this->asset->import($asset, $this->context);
 	}
 }

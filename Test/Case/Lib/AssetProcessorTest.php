@@ -7,7 +7,7 @@ App::uses('AssetContext', 'Asset.Lib');
 class AssetProcessorTest extends CakeTestCase {
 	public function setUp() {
 		$this->Env = AssetEnvironment::getInstance(App::pluginPath('Asset') . DS . 'Test' . DS . 'test_app' . DS . 'webroot' . DS);
-		$this->Asset = AssetFactory::fromUrl('css/bundle.css', $this->Env);
+		$this->Asset = $this->getMock('CssAsset', array(), array('url', 'file'));
 		$this->Context = $this->getMock('AssetContext');
 		$this->Processor = new AssetProcessor($this->Asset, $this->Context);
 	}
@@ -17,9 +17,9 @@ class AssetProcessorTest extends CakeTestCase {
 		$this->Context->expects($this->once())
 			->method('depend')
 			->will($this->returnValue($asset));
-		$asset->expects($this->once())
+		$this->Asset->expects($this->once())
 			->method('import')
-			->with($this->Processor->context);
+			->with($asset, $this->Processor->context);
 		$this->Processor->importAsset($asset);
 	}
 

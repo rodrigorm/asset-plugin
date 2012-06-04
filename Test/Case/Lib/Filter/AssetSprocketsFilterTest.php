@@ -18,7 +18,7 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 			->method('depend')
 			->with($this->equalTo('asset'))
 			->will($this->returnValue($asset));
-		$asset->expects($this->once())
+		$this->Asset->expects($this->once())
 			->method('import')
 			->will($this->returnValue('asset content'));
 
@@ -32,7 +32,7 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 			->method('depend')
 			->with($this->equalTo('asset'))
 			->will($this->returnValue($asset));
-		$asset->expects($this->once())
+		$this->Asset->expects($this->once())
 			->method('import')
 			->will($this->returnValue('asset content'));
 
