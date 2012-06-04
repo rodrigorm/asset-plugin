@@ -66,7 +66,6 @@ EOT;
 @import "/asset/css/circular-af897e1b45ec95aaaee1718c448d4258.css";
 @import "/asset/css/default-42dcbd72dd658306b48c1161ae1643fc.css";
 @import "/asset/css/recursive-b81628311c980742f36af8828d46962d.css";
-
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
 	}

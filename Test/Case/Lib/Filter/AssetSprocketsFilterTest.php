@@ -23,6 +23,20 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 			->will($this->returnValue('asset content'));
 
 		$content = '//= require asset';
+		$this->assertEquals("asset content", $this->Filter->input($content));
+	}
+
+	public function testInputNewLine() {
+		$asset = $this->getMock('Asset', array(), array('asset', '/file'));
+		$this->Context->expects($this->once())
+			->method('load')
+			->with($this->equalTo('asset'))
+			->will($this->returnValue($asset));
+		$asset->expects($this->once())
+			->method('import')
+			->will($this->returnValue('asset content'));
+
+		$content = "//= require asset\n";
 		$this->assertEquals("asset content\n", $this->Filter->input($content));
 	}
 }

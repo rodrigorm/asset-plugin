@@ -115,7 +115,6 @@ body { /* circle.css */ }
 
 
 body { /* recursive.css */ }
-
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
 	}
@@ -130,6 +129,7 @@ EOT;
 	}
 
 	public function testContentIncludePlugin() {
+		CakePlugin::load('Other');
 		$this->Asset = TestAsset::fromUrl('css/plugin.css', $this->path);
 		$expected = <<<EOT
 body { /* other/css/bundle.css */ }
