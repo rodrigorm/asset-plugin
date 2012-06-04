@@ -15,7 +15,7 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 	public function testInput() {
 		$asset = $this->getMock('Asset', array(), array('asset', '/file'));
 		$this->Context->expects($this->once())
-			->method('load')
+			->method('depend')
 			->with($this->equalTo('asset'))
 			->will($this->returnValue($asset));
 		$asset->expects($this->once())
@@ -29,7 +29,7 @@ class AssetSprocketsFilterTest extends CakeTestCase {
 	public function testInputNewLine() {
 		$asset = $this->getMock('Asset', array(), array('asset', '/file'));
 		$this->Context->expects($this->once())
-			->method('load')
+			->method('depend')
 			->with($this->equalTo('asset'))
 			->will($this->returnValue($asset));
 		$asset->expects($this->once())

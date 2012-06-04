@@ -15,7 +15,7 @@ class AssetProcessorTest extends CakeTestCase {
 	public function testImportAsset() {
 		$asset = $this->getMock('Asset', array(), array('url', 'file'));
 		$this->Context->expects($this->once())
-			->method('load')
+			->method('depend')
 			->will($this->returnValue($asset));
 		$asset->expects($this->once())
 			->method('import')
@@ -28,7 +28,7 @@ class AssetProcessorTest extends CakeTestCase {
 		Configure::write('debug', 0);
 		$asset = $this->getMock('Asset', array(), array('url', 'file'));
 		$this->Context->expects($this->once())
-			->method('load')
+			->method('depend')
 			->will($this->returnValue($asset));
 		$asset->expects($this->once())
 			->method('content')

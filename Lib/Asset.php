@@ -51,7 +51,7 @@ abstract class Asset {
 	protected function _process(AssetContext $context = null) {
 		if (is_null($context)) {
 			$context = new AssetContext($this->env);
-			$context->depend($this);
+			$context->depends($this);
 		}
 		$processor = new AssetProcessor($this, $context);
 		return $processor->content();

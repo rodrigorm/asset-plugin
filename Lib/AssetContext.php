@@ -17,19 +17,20 @@ class AssetContext {
 		return AssetFactory::fromUrl($asset, $this->_env);
 	}
 
-	public function load($asset, Asset $relative = null) {
+	public function depend($asset, Asset $relative = null) {
 		$result = $this->resolve($asset, $relative);
-		if ($this->depend($result)) {
+		if ($this->dependent($result)) {
 			return new NullAsset($result->url, $result->file, $result->env);
 		}
+		$this->depends($result);
 		return $result;
 	}
 
-	public function depend(Asset $asset) {
-		if (isset($this->_dependencies[$asset->file])) {
-			return true;
-		}
+	public function dependent(Asset $asset) {
+		return isset($this->_dependencies[$asset->file]);
+	}
+
+	public function depends(Asset $asset) {
 		$this->_dependencies[$asset->file] = true;
-		return false;
 	}
 }

@@ -25,7 +25,7 @@ class AssetProcessor {
 	}
 
 	public function importAsset($asset) {
-		return $this->import($this->context->load($asset, $this->asset));
+		return $this->import($this->context->depend($asset, $this->asset));
 	}
 
 	public function import($asset) {
