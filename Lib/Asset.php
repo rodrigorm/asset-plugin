@@ -28,10 +28,7 @@ abstract class Asset {
 	}
 
 	public function digest(AssetContext $context = null) {
-		if (Configure::read('debug') == 0) {
-			return md5($this->content($context));
-		}
-		return md5_file($this->file);
+		return md5($this->content($context));
 	}
 
 	public function digestUrl(AssetContext $context = null) {

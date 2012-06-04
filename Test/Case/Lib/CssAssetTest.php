@@ -33,7 +33,7 @@ EOT;
 	public function testContentDepth() {
 		$this->Asset = CssAsset::fromUrl('css/app/bundle.css', $this->path);
 		$expected = <<<EOT
-@import "/asset/css/bundle-21f0b94760f11e0f77c6548534474bd6.css";
+@import "/asset/css/bundle-f9dfe48ba73e9a71e845add7a7d84fd3.css";
 body { /* app/bundle.css */ }
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
@@ -42,7 +42,7 @@ EOT;
 	public function testContentCircular() {
 		$this->Asset = CssAsset::fromUrl('css/circular.css', $this->path);
 		$expected = <<<EOT
-@import "/asset/css/circle-9154866ae9356bf7b31519dffc0ce8cd.css";
+@import "/asset/css/circle-bc815f2007592ed20c6f028869ca62da.css";
 body { /* circular.css */ }
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
@@ -60,12 +60,12 @@ EOT;
 	public function testContentAll() {
 		$this->Asset = CssAsset::fromUrl('css/all.css', $this->path);
 		$expected = <<<EOT
-@import "/asset/css/app/bundle-fb0ec2301db03eca534d8b3b6f4634df.css";
-@import "/asset/css/bundle-21f0b94760f11e0f77c6548534474bd6.css";
-@import "/asset/css/circle-9154866ae9356bf7b31519dffc0ce8cd.css";
-@import "/asset/css/circular-af897e1b45ec95aaaee1718c448d4258.css";
-@import "/asset/css/default-42dcbd72dd658306b48c1161ae1643fc.css";
-@import "/asset/css/recursive-b81628311c980742f36af8828d46962d.css";
+@import "/asset/css/app/bundle-fdffc148046efffe279fc79e73a596f6.css";
+
+@import "/asset/css/circle-588c5983a167f5df56a957a8665f9936.css";
+
+
+@import "/asset/css/recursive-66f63c42cd046a0be0e76948a121dab1.css";
 EOT;
 		$this->assertEquals($expected, $this->Asset->content());
 	}
