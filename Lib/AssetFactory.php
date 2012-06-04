@@ -2,6 +2,7 @@
 App::uses('Asset', 'Asset.Lib');
 App::uses('CssAsset', 'Asset.Lib');
 App::uses('JsAsset', 'Asset.Lib');
+App::uses('StaticAsset', 'Asset.Lib');
 
 class AssetFactory {
 	public function fromUrl($url, $env = null) {
@@ -13,7 +14,7 @@ class AssetFactory {
 			return JsAsset::fromUrl($url, $env);
 		}
 
-		throw new InvalidArgumentException(__d('asset', 'Invalid asset: %s', $url));
+		return StaticAsset::fromUrl($url, $env);
 	}
 
 	static public function fromAsset($relative, $url) {

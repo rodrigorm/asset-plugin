@@ -32,7 +32,7 @@ class AssetProcessor {
 		return $this->_require($this->context->load($asset, $this->asset));
 	}
 
-	public function _require($asset) {
+	protected function _require($asset) {
 		if (Configure::read('debug') == 0) {
 			return $asset->content($this->context);
 		}

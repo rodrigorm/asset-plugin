@@ -21,13 +21,9 @@ class AssetFactoryTest extends CakeTestCase {
 
 		$result = AssetFactory::fromUrl('js/bundle.js', $this->path);
 		$this->assertInstanceOf('JsAsset', $result);
-	}
 
-/**
- * @expectedException InvalidArgumentException
- */
-	public function testFromUrlInvalid() {
-		AssetFactory::fromUrl('img/photo.jpg', $this->path);
+		$result = AssetFactory::fromUrl('img/photo.jpg', $this->path);
+		$this->assertInstanceOf('StaticAsset', $result);
 	}
 
 	public function testFromAsset() {
