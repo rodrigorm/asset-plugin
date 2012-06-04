@@ -12,7 +12,7 @@ class AssetProcessorTest extends CakeTestCase {
 		$this->Processor = new AssetProcessor($this->Asset, $this->Context);
 	}
 
-	public function testRequireAsset() {
+	public function testImportAsset() {
 		$asset = $this->getMock('Asset', array(), array('url', 'file'));
 		$this->Context->expects($this->once())
 			->method('load')
@@ -20,10 +20,10 @@ class AssetProcessorTest extends CakeTestCase {
 		$asset->expects($this->once())
 			->method('import')
 			->with($this->Processor->context);
-		$this->Processor->requireAsset($asset);
+		$this->Processor->importAsset($asset);
 	}
 
-	public function testRequireAssetCombine() {
+	public function testImportAssetCombine() {
 		$debug = Configure::read('debug');
 		Configure::write('debug', 0);
 		$asset = $this->getMock('Asset', array(), array('url', 'file'));
@@ -33,7 +33,7 @@ class AssetProcessorTest extends CakeTestCase {
 		$asset->expects($this->once())
 			->method('content')
 			->with($this->Processor->context);
-		$this->Processor->requireAsset($asset);
+		$this->Processor->importAsset($asset);
 		Configure::write('debug', $debug);
 	}
 }

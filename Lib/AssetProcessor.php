@@ -16,11 +16,7 @@ class AssetProcessor {
 	}
 
 	public function content() {
-		return $this->_content($this->asset);
-	}
-
-	protected function _content($asset) {
-		return $this->_process(file_get_contents($asset->file));
+		return $this->_process(file_get_contents($this->asset->file));
 	}
 
 	protected function _process($content) {
@@ -28,11 +24,11 @@ class AssetProcessor {
 		return $filter->input($content);
 	}
 
-	public function requireAsset($asset) {
-		return $this->_require($this->context->load($asset, $this->asset));
+	public function importAsset($asset) {
+		return $this->import($this->context->load($asset, $this->asset));
 	}
 
-	protected function _require($asset) {
+	public function import($asset) {
 		if (Configure::read('debug') == 0) {
 			return $asset->content($this->context);
 		}

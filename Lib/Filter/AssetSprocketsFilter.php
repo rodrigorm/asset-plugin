@@ -17,6 +17,6 @@ class AssetSprocketsFilter extends AssetFilter implements AssetInputFilter {
 	}
 
 	protected function _replace($matches) {
-		return $this->_require($matches[2]) . $matches[3];
+		return $this->import($matches[2]) . $matches[3];
 	}
 }

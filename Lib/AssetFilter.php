@@ -9,8 +9,8 @@ abstract class AssetFilter {
 		$this->_processor = $processor;
 	}
 
-	protected function _require($required) {
-		return $this->_processor->requireAsset($required);
+	public function import($required) {
+		return $this->_processor->importAsset($required);
 	}
 }
 
