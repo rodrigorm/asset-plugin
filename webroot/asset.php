@@ -1,4 +1,4 @@
 <?php 
-App::uses('AssetDispatcher', 'Asset.Lib');
-$Dispatcher = new AssetDispatcher();
+App::uses('AssetsDispatcher', 'Asset.Lib');
+$Dispatcher = new AssetsDispatcher();
 $Dispatcher->dispatch($url, $response);

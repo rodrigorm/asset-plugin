@@ -1,5 +1,5 @@
 <?php 
-App::uses('AssetDispatcher', 'Asset.Lib');
+App::uses('AssetsDispatcher', 'Asset.Lib');
 
 class AssetController extends Controller {
 	public $autoRender = false;
@@ -10,7 +10,7 @@ class AssetController extends Controller {
 
 	public function dispatch() {
 		$url = implode('/', $this->request->params['pass']);
-		$Dispatcher = new AssetDispatcher();
+		$Dispatcher = new AssetsDispatcher();
 		$Dispatcher->dispatch($url, $this->response);
 	}
 }

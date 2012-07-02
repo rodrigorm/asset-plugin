@@ -1,11 +1,11 @@
 <?php 
-App::uses('AssetDispatcher', 'Asset.Lib');
+App::uses('AssetsDispatcher', 'Asset.Lib');
 App::uses('CakeResponse', 'Network');
 
-class AssetDispatcherTest extends CakeTestCase {
+class AssetsDispatcherTest extends CakeTestCase {
 	public function setUp() {
 		$this->env = AssetEnvironment::getInstance(App::pluginPath('Asset') . 'Test' . DS . 'test_app' . DS . 'webroot' . DS);
-		$this->Dispatcher = new AssetDispatcher($this->env);
+		$this->Dispatcher = new AssetsDispatcher($this->env);
 	}
 
 	public function testDispatch() {

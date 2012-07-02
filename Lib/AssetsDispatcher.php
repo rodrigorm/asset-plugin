@@ -2,7 +2,7 @@
 App::uses('AssetFactory', 'Asset.Lib');
 App::uses('File', 'Utility');
 
-class AssetDispatcher {
+class AssetsDispatcher {
 	protected $_env;
 
 	public function __construct($env = null) {
